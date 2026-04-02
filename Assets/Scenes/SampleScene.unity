@@ -11686,7 +11686,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 6.7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -11732,6 +11732,11 @@ MonoBehaviour:
   - {fileID: 1710666683}
   - {fileID: 1867740586}
   agent: {fileID: 884066241}
+  playerTransform: {fileID: 792723205}
+  enemyAnim: {fileID: 1946989906}
+  chaseDistance: 10
+  giveUpDistance: 15
+  chaseCheckAngle: 60
 --- !u!1001 &886003205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24112,6 +24117,11 @@ PrefabInstance:
 --- !u!4 &1946989905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4047972025199878, guid: 928a1377c1cd4515b208fef3a396b8ea, type: 3}
+  m_PrefabInstance: {fileID: 1463988810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1946989906 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95457531584545886, guid: 928a1377c1cd4515b208fef3a396b8ea, type: 3}
   m_PrefabInstance: {fileID: 1463988810}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1952224331 stripped
