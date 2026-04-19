@@ -11,9 +11,6 @@ public class PlayerAnimator : MonoBehaviour
     private void Update()
     {
         animator.SetBool("IsGrounded", playerController.IsGrounded());
-
-        _playerVelocity = playerController.GetPlayerVelocity();
-        _playerVelocity.y = 0;
         
         animator.SetFloat("Velocity", playerController.GetPlayerVelocity().sqrMagnitude);
     }

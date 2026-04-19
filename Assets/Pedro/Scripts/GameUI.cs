@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class GameUI : MonoBehaviour
     public GameObject pausePanel;
     public GameObject winPanel;
     public GameObject losePanel;
+    
+    [Header("References")]
+    public MouseBehaviour mouseBehaviour;
 
     private int _totalChests;
     private int _collectedChests;
@@ -66,27 +70,32 @@ public class GameUI : MonoBehaviour
             case GameState.MainMenu:
                 mainMenuPanel.SetActive(true);
                 _timerRunning = false;
+                mouseBehaviour.ShowMouse(true);
                 break;
 
             case GameState.Playing:
                 hudPanel.SetActive(true);
                 _timerRunning = true;
+                mouseBehaviour.ShowMouse(false);
                 break;
 
             case GameState.Paused:
-                hudPanel.SetActive(true); // keep HUD visible behind pause
+                hudPanel.SetActive(true); 
                 pausePanel.SetActive(true);
                 _timerRunning = false;
+                mouseBehaviour.ShowMouse(true);
                 break;
 
             case GameState.Win:
                 winPanel.SetActive(true);
                 _timerRunning = false;
+                mouseBehaviour.ShowMouse(true);
                 break;
 
             case GameState.Lose:
                 losePanel.SetActive(true);
                 _timerRunning = false;
+                mouseBehaviour.ShowMouse(true);
                 break;
         }
     }
@@ -115,6 +124,19 @@ public class GameUI : MonoBehaviour
 
         // turn red when under 30 seconds
         timerText.color = _timeRemaining <= 30f ? Color.red : Color.white;
+    }
+    
+    public void OnRestartButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void OnQuitButton()
+    {
+        Application.Quit();
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
     
 }

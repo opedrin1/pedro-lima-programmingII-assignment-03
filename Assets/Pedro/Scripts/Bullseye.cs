@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class Bullseye : MonoBehaviour
 {
-    [Header("Linked Chest")]
+    [Header("Caged Chest")]
     public CagedChest linkedChest;
+
+    void Start()
+    {
+        if (linkedChest == null)
+        {
+            Debug.LogError("No chest linked in the inspector");
+        }
+    }
 
     void OnCollisionEnter(Collision collision)
     {

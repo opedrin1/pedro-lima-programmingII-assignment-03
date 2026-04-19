@@ -25,7 +25,6 @@ public class CagedChest : MonoBehaviour
 
     void SetLocked(bool locked)
     {
-        // for locked, collider must be trigger not checked
         isLocked = locked;
     }
 }

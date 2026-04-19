@@ -6,6 +6,12 @@ public class Arrow : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        if (_rb == null)
+        {
+            Debug.LogError("No rigidbody attached to Arrow");
+        }
+        
         Invoke(nameof(DestroyAfter), 5f);
     }
     

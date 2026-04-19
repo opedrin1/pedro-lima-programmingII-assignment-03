@@ -31,9 +31,6 @@ public class CameraSwitcher : MonoBehaviour
                 //DO SOMETHING ELSE
                 aimCamera.Prioritize();
                 break;
-            default:
-                //NOTHING TO DO HERE
-                break;
         }
     }
 }
