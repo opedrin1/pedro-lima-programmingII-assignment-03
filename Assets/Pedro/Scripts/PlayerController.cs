@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [Header("AIM movement")]
     [SerializeField] private float moveSpeedAimed = 2;
     [SerializeField] private float verticalSpeedAimed = 10;
+    [SerializeField] private float horizontalSpeedAimed = 10;
     [SerializeField] private Transform aimTrack;
     [SerializeField] private float maxAimHeight;
     [SerializeField] private float minAimHeight;
@@ -152,7 +153,7 @@ public class PlayerController : MonoBehaviour
     private void CalculateMovementAim()
     {
         // rotate the player around the Y axis based on x (horizontal) input
-        transform.Rotate(Vector3.up, verticalSpeedAimed * _lookInput.x * Time.deltaTime);
+        transform.Rotate(Vector3.up, horizontalSpeedAimed * _lookInput.x * Time.deltaTime);
 
         // WASD relates to where the player is currently facing
         // Left/Right goes sideways, forward/back moves along the players facing direction

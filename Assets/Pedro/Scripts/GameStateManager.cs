@@ -10,6 +10,11 @@ public class GameStateManager : MonoBehaviour
 
     public GameState CurrentGameState { get; private set; }
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private float menuMusicVolume = 0.05f;
+    [SerializeField] private float gameMusicVolume = 0.3f;
+    
     private InputAction _startAction;
     private InputAction _pauseAction;
 
@@ -41,6 +46,12 @@ public class GameStateManager : MonoBehaviour
 
     void Start()
     {
+        if (musicSource != null)
+        {
+            musicSource.loop = true;
+            musicSource.Play();
+        }
+        
         SetState(GameState.MainMenu);
     }
 
@@ -63,6 +74,11 @@ public class GameStateManager : MonoBehaviour
         CurrentGameState = newState;
 
         Time.timeScale = newState == GameState.Playing ? 1f : 0f;
+
+        if (musicSource != null)
+        {
+            musicSource.volume = newState == GameState.Playing ? gameMusicVolume : menuMusicVolume;
+        }
 
         GameUI.Instance.OnStateChanged(newState);
     }

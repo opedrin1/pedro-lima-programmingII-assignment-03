@@ -11,6 +11,10 @@ public class Shooter : MonoBehaviour
 
     [SerializeField] private float shootForce;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    
     private GameObject _arrow;
 
     private Vector3 _shootDirection;
@@ -44,6 +48,11 @@ public class Shooter : MonoBehaviour
     private void Shoot(InputAction.CallbackContext context)
     {
         if (_currentState != PlayerState.AIM) return;
+
+        if (audioSource != null && shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
         
         // calculate the direction
         _shootDirection = aimTrack.position - shootPoint.position;

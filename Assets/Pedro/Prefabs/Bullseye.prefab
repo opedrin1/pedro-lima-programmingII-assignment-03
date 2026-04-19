@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1028842864637059723}
   - component: {fileID: 1285528449970230121}
   - component: {fileID: 5056236506312694116}
-  - component: {fileID: 1312235024781631225}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -118,19 +117,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1312235024781631225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247773935620020771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4022c0f57b63a6b449e420bc8b0b7769, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bullseye
-  linkedChest: {fileID: 0}
 --- !u!1 &3436705928262073698
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +402,6 @@ GameObject:
   - component: {fileID: 6134781704903024744}
   - component: {fileID: 1937950376646512883}
   - component: {fileID: 6759037976857844427}
-  - component: {fileID: 2087846544265658426}
   m_Layer: 0
   m_Name: Target (1)
   m_TagString: Untagged
@@ -519,19 +504,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2087846544265658426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7870679475881630706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4022c0f57b63a6b449e420bc8b0b7769, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bullseye
-  linkedChest: {fileID: 0}
 --- !u!1 &8819385292336867191
 GameObject:
   m_ObjectHideFlags: 0
