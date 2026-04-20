@@ -30,11 +30,12 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int amount)
     {
         if (_isInvincible) return;
 
-        _currentLives--;
+        _currentLives -= amount;
+        _currentLives = Mathf.Max(0, _currentLives);
         OnLivesChanged?.Invoke(_currentLives);
 
         if (_currentLives <= 0)

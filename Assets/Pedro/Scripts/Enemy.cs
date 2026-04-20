@@ -4,8 +4,8 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] protected NavMeshAgent agent;
     [SerializeField] private Transform[] patrolPoints;
-    [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Animator enemyAnim;
     [SerializeField] private float chaseDistance;
@@ -13,15 +13,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float chaseCheckAngle;
     [SerializeField] private float attackDistance;
     [SerializeField] private float attackCooldown = 1.5f;
+    
+    protected PlayerHealth _playerHealth;
+    protected float _attackTimer;
 
-    private PlayerHealth _playerHealth;
-    private float _attackTimer;
+    protected EnemyState _currentState;
+    protected Transform _currentTarget;
+    protected bool _isWaiting = false;
 
-    private EnemyState _currentState;
-    private Transform _currentTarget;
-    private bool _isWaiting = false;
-
-    void Start()
+    protected virtual void Start()
     {
         _currentState = EnemyState.Idle;
         _playerHealth = playerTransform.GetComponent<PlayerHealth>();
@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
             _attackTimer -= Time.fixedDeltaTime;
             if(_attackTimer <= 0f)
             {
-                _playerHealth.TakeDamage();
+                DealDamage();
                 _attackTimer = attackCooldown;
             }
 
@@ -139,12 +139,22 @@ public class Enemy : MonoBehaviour
         return Vector3.Angle(transform.forward, _directionToPlayer) <= chaseCheckAngle;
     }
 
+    protected virtual void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    protected virtual void DealDamage()
+    {
+        _playerHealth.TakeDamage(1);
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Arrow"))
         {
             Destroy(other.gameObject); // destroy arrow
-            Destroy(gameObject); // destroy enemy
+            Die(); // destroy enemy
         }
     }
 }
