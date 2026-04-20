@@ -11,7 +11,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float chaseDistance;
     [SerializeField] private float giveUpDistance;
     [SerializeField] private float chaseCheckAngle;
-    
+    [SerializeField] private float attackDistance;
+    [SerializeField] private float attackCooldown = 1.5f;
+
+    private PlayerHealth _playerHealth;
+    private float _attackTimer;
+
     private EnemyState _currentState;
     private Transform _currentTarget;
     private bool _isWaiting = false;
@@ -19,6 +24,8 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _currentState = EnemyState.Idle;
+        _playerHealth = playerTransform.GetComponent<PlayerHealth>();
+        _attackTimer = attackCooldown;
     }
 
     void FixedUpdate()
@@ -26,68 +33,93 @@ public class Enemy : MonoBehaviour
         if(_currentState == EnemyState.Idle)
         {
             enemyAnim.SetBool("Idle", true);
-            
-            if(!_isWaiting)
-                StartCoroutine(WaitAndChooseARandomPointAndMove(5));
 
-            //check for the player to chase
+            if(!_isWaiting)
+            {
+                _isWaiting = true;
+                StartCoroutine(WaitAndChooseARandomPointAndMove(5));
+            }
+
             if(IsPlayerInRange() && IsInFOV())
             {
                 _currentState = EnemyState.Chase;
                 enemyAnim.SetBool("Idle", false);
+                agent.isStopped = false;
             }
         }
         else if(_currentState == EnemyState.Patrol)
         {
             enemyAnim.SetBool("Walk", true);
-            
+
             if(agent.remainingDistance <= .2f)
             {
                 _currentState = EnemyState.Idle;
                 enemyAnim.SetBool("Walk", false);
             }
 
-            // check for the player to chase
             if(IsPlayerInRange() && IsInFOV())
             {
                 _currentState = EnemyState.Chase;
                 enemyAnim.SetBool("Walk", false);
+                agent.isStopped = false;
             }
-
         }
         else if(_currentState == EnemyState.Chase)
         {
             enemyAnim.SetBool("Chase", true);
-            
             agent.SetDestination(playerTransform.position);
 
-            // give up
+            if(Vector3.Distance(transform.position, playerTransform.position) <= attackDistance)
+            {
+                _currentState = EnemyState.Attack;
+                enemyAnim.SetBool("Chase", false);
+                agent.isStopped = true;
+                _attackTimer = attackCooldown;
+            }
+
             if(HasPlayerGoneAwayFromMe())
             {
                 _currentState = EnemyState.Idle;
                 enemyAnim.SetBool("Chase", false);
             }
         }
+        else if(_currentState == EnemyState.Attack)
+        {
+            enemyAnim.SetBool("Attack", true);
+
+            transform.LookAt(new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z));
+
+            _attackTimer -= Time.fixedDeltaTime;
+            if(_attackTimer <= 0f)
+            {
+                _playerHealth.TakeDamage();
+                _attackTimer = attackCooldown;
+            }
+
+            if(Vector3.Distance(transform.position, playerTransform.position) > attackDistance)
+            {
+                _currentState = EnemyState.Chase;
+                enemyAnim.SetBool("Attack", false);
+                agent.isStopped = false;
+            }
+        }
     }
 
     private IEnumerator WaitAndChooseARandomPointAndMove(float timeToWait)
     {
-        _isWaiting = true;
         yield return new WaitForSeconds(timeToWait);
         _currentState = EnemyState.Patrol;
         enemyAnim.SetBool("Idle", false);
+        agent.isStopped = false;
         ChooseARandomPointAndMove();
         _isWaiting = false;
     }
 
-
     private void ChooseARandomPointAndMove()
     {
-        if(patrolPoints.Length <=0) return;
+        if(patrolPoints.Length <= 0) return;
         _currentTarget = patrolPoints[Random.Range(0, patrolPoints.Length)];
-
         agent.SetDestination(_currentTarget.position);
-
     }
 
     private bool IsPlayerInRange()
@@ -105,5 +137,14 @@ public class Enemy : MonoBehaviour
     {
         _directionToPlayer = (playerTransform.position - transform.position).normalized;
         return Vector3.Angle(transform.forward, _directionToPlayer) <= chaseCheckAngle;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("Arrow"))
+        {
+            Destroy(other.gameObject); // destroy arrow
+            Destroy(gameObject); // destroy enemy
+        }
     }
 }

@@ -4,12 +4,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Player Attributes
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float moveSpeed = 2;
     [SerializeField] private float rotationSpeed = 10;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private float jumpVelocity = 10f;
-
+    #endregion
+    
+    #region Player Aim Attributes
     [Header("AIM movement")]
     [SerializeField] private float moveSpeedAimed = 2;
     [SerializeField] private float verticalSpeedAimed = 10;
@@ -17,15 +20,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform aimTrack;
     [SerializeField] private float maxAimHeight;
     [SerializeField] private float minAimHeight;
+    #endregion
 
-
+    #region Ground Check Variables
     [Space(10)]
     [Header("Ground Check")]
     [SerializeField] private Vector3 groundCheckOffset;
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask groundLayer;
-
+    #endregion
+    
+    #region Other Variables
     public event Action OnJumpEvent;
     public event Action<PlayerState> OnStateUpdated;
     
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private Vector3 _defaultAimTrackerPosition;
     private Vector3 _tempAimTrackerPosition;
+    #endregion
 
     private PlayerState _currentState;
 

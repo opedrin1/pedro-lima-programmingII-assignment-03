@@ -58,12 +58,14 @@ public class Shooter : MonoBehaviour
         _shootDirection = aimTrack.position - shootPoint.position;
         _shootDirection.Normalize();
         
-        //create a new arrow
+        // create a new arrow
         _arrow = Instantiate(shootObject, shootPoint.position, Quaternion.LookRotation(_shootDirection));
+        
+        // ignore collision with player
+        Physics.IgnoreCollision(_arrow.GetComponent<Collider>(), GetComponent<Collider>());
 
         // apply a force
-        _arrow.GetComponent<Rigidbody>().AddForce(shootForce * _shootDirection, ForceMode.Impulse);
+        var rb = _arrow.GetComponent<Rigidbody>();
+        rb.AddForce(shootForce * _shootDirection, ForceMode.Impulse);
     }
-
-    
 }

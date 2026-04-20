@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class GameUI : MonoBehaviour
     [Header("HUD")]
     public TMP_Text chestCounterText;
     public TMP_Text timerText;
+    public Image[] heartImages;
+    public Sprite heartFull;
+    public Sprite heartEmpty;
 
     [Header("Settings")]
     public float timeLimit = 300f;
@@ -22,6 +26,7 @@ public class GameUI : MonoBehaviour
     
     [Header("References")]
     public MouseBehaviour mouseBehaviour;
+    public PlayerHealth playerHealth;
 
     private int _totalChests;
     private int _collectedChests;
@@ -38,6 +43,9 @@ public class GameUI : MonoBehaviour
         _totalChests = FindObjectsByType<ChestInteractable>(FindObjectsSortMode.None).Length;
         _timeRemaining = timeLimit;
         UpdateChestUI();
+        
+        playerHealth.OnLivesChanged += UpdateHeartsUI;
+        playerHealth.OnPlayerDeath += () => GameStateManager.Instance.SetState(GameState.Lose);
     }
 
     void Update()
@@ -114,6 +122,14 @@ public class GameUI : MonoBehaviour
     void UpdateChestUI()
     {
         chestCounterText.text = $"Chests: {_collectedChests} / {_totalChests}";
+    }
+
+    void UpdateHeartsUI(int currentLives)
+    {
+        for (int i = 0; i < heartImages.Length; i++)
+        {
+            heartImages[i].sprite = i < currentLives ? heartFull : heartEmpty;
+        }
     }
 
     void UpdateTimerUI()
